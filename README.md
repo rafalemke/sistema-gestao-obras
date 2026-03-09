@@ -31,7 +31,86 @@ obras-gov/
 
 ---
 
+## 🚀 Passo a Passo de Instalação
 
+### 1. Pré-requisitos
+
+- Python 3.11+
+- Node.js 18+
+- MySQL 8.0+
+- Git
+
+### 2. Banco de Dados MySQL
+
+```sql
+-- Execute no MySQL como root:
+CREATE DATABASE obras_gov CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'obras_user'@'localhost' IDENTIFIED BY 'senha_segura';
+GRANT ALL PRIVILEGES ON obras_gov.* TO 'obras_user'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+### 3. Backend
+
+```bash
+cd obras-gov/backend
+
+# Ambiente virtual
+python -m venv venv
+source venv/bin/activate          # Linux/Mac
+# venv\Scripts\activate           # Windows
+
+# Instalar dependências
+pip install -r requirements.txt
+
+# Configurar variáveis de ambiente
+cp .env.example .env
+# Edite .env e ajuste DATABASE_URL e SECRET_KEY
+
+# Criar tabelas e usuário admin
+python init_db.py
+
+# Iniciar servidor
+uvicorn app.main:app --reload --port 8000
+```
+
+O backend estará disponível em: http://localhost:8000  
+Documentação Swagger: http://localhost:8000/docs
+
+### 4. Frontend
+
+```bash
+cd obras-gov/frontend
+
+npm install
+npm run dev
+```
+
+O frontend estará disponível em: http://localhost:3000
+
+---
+
+## 🔐 Credenciais Iniciais
+
+| Campo | Valor |
+|-------|-------|
+| E-mail | admin@obras.gov.br |
+| Senha | Admin@123 |
+
+> ⚠️ Altere a senha do admin após o primeiro login!
+
+---
+
+## 👥 Perfis de Acesso (RBAC)
+
+| Perfil | Permissões |
+|--------|-----------|
+| **Admin** | Tudo: usuários, obras, BMs, cronogramas |
+| **Gestor** | Criar/editar obras, BMs, cronogramas |
+| **Fiscal** | Editar obras, BMs, cronogramas (sem usuários) |
+| **Visualizador** | Somente leitura |
+
+---
 
 ## 🗃️ Tabelas do Banco
 
@@ -84,7 +163,7 @@ obras-gov/
 - `PATCH /api/v1/users/{id}` — Editar usuário (admin)
 
 ---
-<!-- 
+
 ## 🔄 Evolução Sugerida
 
 1. **Upload de documentos** — Anexar SEI, contratos, fotos
@@ -92,10 +171,10 @@ obras-gov/
 3. **Relatórios PDF** — Exportar BM e cronograma
 4. **Dashboard com gráficos** — Recharts para acompanhamento financeiro
 5. **Alembic migrations** — Para evoluir o schema sem perder dados
-6. **Testes automatizados** — pytest + httpx -->
+6. **Testes automatizados** — pytest + httpx
 
 ---
-<!-- 
+
 ## 🛠️ Configurando Alembic (migrações)
 
 ```bash
@@ -110,4 +189,4 @@ alembic init migrations
 # Criar migration inicial:
 alembic revision --autogenerate -m "initial"
 alembic upgrade head
-``` -->
+```
