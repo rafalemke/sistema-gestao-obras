@@ -1,0 +1,21 @@
+# Dependências do Frontend (Node/React)
+node_modules/
+dist/
+.env
+
+# Dependências do Backend (Python)
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+.pytest_cache/
+
+# Banco de dados local (se usar SQLite no backend)
+*.sqlite3
+*.db
+
+# Arquivos de Sistema Operacional
+.DS_Store
+Thumbs.db
